@@ -45,31 +45,6 @@ pip install pyyaml scipy numpy
 # Tests your local model at http://127.0.0.1:3300/v1 with model v0-1.0-md
 python effective_context_length.py
 
-# Test a specific endpoint (quick test to find maximum reliable context length)
-# Runs efficient hybrid testing to determine context limits for the given API
-python effective_context_length.py https://api.example.com/v1
-
-# Test with custom model
-python effective_context_length.py https://api.openai.com/v1 --model gpt-4
-
-# Save results to file
-python effective_context_length.py https://api.openai.com/v1 --output results.json
-```
-
-## 📖 Usage Examples
-
-### Example 1: Quick Endpoint Test
-
-```bash
-# Test OpenAI's GPT-3.5-turbo with quick binary search
-python effective_context_length.py https://api.openai.com/v1 \
-  --model gpt-3.5-turbo \
-  --strategy binary-search \
-  --max-tokens 16000 \
-  --samples-per-size 2 \
-  --output gpt35-results.json
-```
-
 **Typical Output:**
 ```
 ✅ Test completed in 427.3 seconds
@@ -95,6 +70,31 @@ python effective_context_length.py https://api.openai.com/v1 \
 │        201,000 │   100.0%   │ ✗ Critical │
 │        202,000 │   100.0%   │ ✗ Critical │
 └────────────────┴────────────┴────────────┘
+```
+
+# Test a specific endpoint (quick test to find maximum reliable context length)
+# Runs efficient hybrid testing to determine context limits for the given API
+python effective_context_length.py https://api.example.com/v1
+
+# Test with custom model
+python effective_context_length.py https://api.openai.com/v1 --model gpt-4
+
+# Save results to file
+python effective_context_length.py https://api.openai.com/v1 --output results.json
+```
+
+## 📖 Usage Examples
+
+### Example 1: Quick Endpoint Test
+
+```bash
+# Test OpenAI's GPT-3.5-turbo with quick binary search
+python effective_context_length.py https://api.openai.com/v1 \
+  --model gpt-3.5-turbo \
+  --strategy binary-search \
+  --max-tokens 16000 \
+  --samples-per-size 2 \
+  --output gpt35-results.json
 ```
 
 ### Example 2: Comprehensive Analysis
