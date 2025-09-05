@@ -41,11 +41,13 @@ pip install pyyaml scipy numpy
 ### Basic Usage
 
 ```bash
-# Test with default configuration (uses your configured defaults)
+# Test with default configuration (localhost server with pre-configured settings)
+# Tests your local model at http://127.0.0.1:3300/v1 with model v0-1.0-md
 python effective_context_length.py
 
-# Test a specific endpoint
-python effective_context_length.py https://api.openai.com/v1
+# Test a specific endpoint (quick test to find maximum reliable context length)
+# Runs efficient hybrid testing to determine context limits for the given API
+python effective_context_length.py https://api.example.com/v1
 
 # Test with custom model
 python effective_context_length.py https://api.openai.com/v1 --model gpt-4
