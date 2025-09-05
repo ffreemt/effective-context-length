@@ -229,7 +229,8 @@ class HTTPClient:
         timeout: int = 300,
         max_retries: int = 3,
         rate_limit: float = 1.0,
-        max_connections: int = 10
+        max_connections: int = 10,
+        model: str = "gpt-3.5-turbo"
     ):
         """
         Initialize the HTTP client.
@@ -241,6 +242,7 @@ class HTTPClient:
             max_retries: Maximum number of retry attempts
             rate_limit: Maximum requests per second
             max_connections: Maximum concurrent connections
+            model: Model name to use for health check and requests
         """
         # Get API key from parameter or environment variable
         api_key = api_key or os.getenv('OPENAI_API_KEY')
@@ -256,6 +258,7 @@ class HTTPClient:
         self.api_key = api_key
         self.timeout = timeout
         self.max_retries = max_retries
+        self.model = model
         
         # Initialize components
         self.rate_limiter = RateLimiter(rate_limit)
@@ -436,9 +439,9 @@ class HTTPClient:
             True if the endpoint is accessible, False otherwise
         """
         try:
-            # Simple test payload
+            # Simple test payload using the configured model
             test_payload = {
-                "model": "gpt-3.5-turbo",
+                "model": self.model,
                 "messages": [{"role": "user", "content": "Hello"}],
                 "max_tokens": 1
             }

@@ -454,7 +454,8 @@ class EffectiveContextLengthTester:
             api_key=self.api_key,
             timeout=self.config['timeout'],
             max_retries=self.config['max_retries'],
-            rate_limit=self.config['rate_limit']
+            rate_limit=self.config['rate_limit'],
+            model=self.model
         )
         
         self.context_generator = ContextGenerator(

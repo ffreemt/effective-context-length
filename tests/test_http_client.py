@@ -173,7 +173,8 @@ class TestHTTPClient:
                 api_key="test-key-long-enough",
                 timeout=30,
                 max_retries=2,
-                rate_limit=1.0
+                rate_limit=1.0,
+                model="test-model"
             )
             yield client, mock
     
