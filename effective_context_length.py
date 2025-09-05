@@ -17,6 +17,9 @@ from pathlib import Path
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 from effective_context_length import __version__, __description__
+from rich.console import Console
+from rich.table import Table
+from rich.text import Text
 
 
 def create_parser() -> argparse.ArgumentParser:
@@ -386,6 +389,12 @@ async def run_context_length_test(args: argparse.Namespace) -> Dict[str, Any]:
                 print(f"\n💡 Key recommendations:")
                 for i, rec in enumerate(analysis.recommendations[:3], 1):
                     print(f"   {i}. {rec}")
+            
+            # Display error rates by context length using rich formatting
+            if analysis.errors.error_rate_by_context_length and not args.quiet:
+                print()  # Add spacing
+                console = Console()
+                display_error_rate_table(analysis.errors.error_rate_by_context_length, console)
         
         # Export detailed results
         detailed_results = analyzer.export_detailed_results(analysis)
@@ -560,6 +569,62 @@ def format_output(results: Dict[str, Any], format_type: str) -> str:
     
     else:
         raise ValueError(f"Unsupported format: {format_type}")
+
+
+def display_error_rate_table(error_rate_by_context_length: Dict[int, float], console: Console = None) -> None:
+    """
+    Display error rates by context length using rich formatting.
+    
+    Args:
+        error_rate_by_context_length: Dictionary mapping context lengths to error rates
+        console: Rich console instance (creates new one if None)
+    """
+    if console is None:
+        console = Console()
+    
+    if not error_rate_by_context_length:
+        console.print("[yellow]No error rate data available[/yellow]")
+        return
+    
+    # Create table
+    table = Table(title="Error Rates by Context Length")
+    
+    # Add columns
+    table.add_column("Context Length", justify="right", style="cyan")
+    table.add_column("Error Rate", justify="center", style="magenta")
+    table.add_column("Status", justify="center")
+    
+    # Sort by context length
+    sorted_lengths = sorted(error_rate_by_context_length.keys())
+    
+    for length in sorted_lengths:
+        error_rate = error_rate_by_context_length[length]
+        error_rate_percent = error_rate * 100
+        
+        # Format error rate with color coding
+        if error_rate == 0:
+            error_rate_text = f"[green]{error_rate_percent:.1f}%[/green]"
+            status = "[green]✓ Perfect[/green]"
+        elif error_rate < 0.05:  # < 5%
+            error_rate_text = f"[green]{error_rate_percent:.1f}%[/green]"
+            status = "[green]✓ Good[/green]"
+        elif error_rate < 0.1:  # < 10%
+            error_rate_text = f"[yellow]{error_rate_percent:.1f}%[/yellow]"
+            status = "[yellow]⚠ Acceptable[/yellow]"
+        elif error_rate < 0.2:  # < 20%
+            error_rate_text = f"[orange_red1]{error_rate_percent:.1f}%[/orange_red1]"
+            status = "[orange_red1]⚠ High[/orange_red1]"
+        else:  # >= 20%
+            error_rate_text = f"[red]{error_rate_percent:.1f}%[/red]"
+            status = "[red]✗ Critical[/red]"
+        
+        table.add_row(
+            f"{length:,}",
+            error_rate_text,
+            status
+        )
+    
+    console.print(table)
 
 
 def main() -> int:
