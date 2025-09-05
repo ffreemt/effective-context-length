@@ -70,6 +70,33 @@ python effective_context_length.py https://api.openai.com/v1 \
   --output gpt35-results.json
 ```
 
+**Typical Output:**
+```
+✅ Test completed in 427.3 seconds
+📊 Total requests: 30
+✅ Successful: 16
+❌ Failed: 14
+🎯 Effective context length: 200,000 tokens
+🛡️  Recommended safe limit: 180,000 tokens
+
+💡 Key recommendations:
+   1. Effective context length determined: 200,000 tokens
+   2. Recommended safe operating limit: 180,000 tokens (10% buffer below effective limit)
+   3. High overall error rate (46.7%) - investigate error causes
+
+       Error Rates by Context Length
+┏━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━┓
+┃ Context Length ┃ Error Rate ┃   Status   ┃
+┡━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━━┩
+│          1,000 │    0.0%    │ ✓ Perfect  │
+│        198,000 │    0.0%    │ ✓ Perfect  │
+│        199,000 │   80.0%    │ ✗ Critical │
+│        200,000 │    0.0%    │ ✓ Perfect  │
+│        201,000 │   100.0%   │ ✗ Critical │
+│        202,000 │   100.0%   │ ✗ Critical │
+└────────────────┴────────────┴────────────┘
+```
+
 ### Example 2: Comprehensive Analysis
 
 ```bash
