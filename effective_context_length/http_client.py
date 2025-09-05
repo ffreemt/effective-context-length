@@ -337,7 +337,7 @@ class HTTPClient:
                 
                 # Make the request
                 self.logger.debug(f"Making request attempt {attempt + 1} to {url}")
-                response = await self.client.post(url, json=payload)
+                response = await self.client.post(url, json=payload, stream=False)
                 
                 # Calculate response time
                 response_time_ms = (time.time() - start_time) * 1000
