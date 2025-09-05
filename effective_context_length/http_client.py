@@ -443,7 +443,8 @@ class HTTPClient:
             test_payload = {
                 "model": self.model,
                 "messages": [{"role": "user", "content": "Hello"}],
-                "max_tokens": 1
+                "max_tokens": 1,
+                "stream": False
             }
             
             response = await self.make_chat_completion_request(test_payload)
