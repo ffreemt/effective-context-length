@@ -1,0 +1,18 @@
+# Core dependencies for HTTP client and CLI
+httpx>=0.25.0
+rich>=13.0.0
+
+# Token counting and context generation
+tiktoken>=0.5.0
+
+# Optional dependencies for advanced features
+pydantic>=2.0.0
+pyyaml>=6.0
+numpy>=1.24.0
+scipy>=1.10.0
+
+# Development and testing dependencies
+pytest>=7.0.0
+pytest-asyncio>=0.21.0
+
+# Note: logging is part of Python standard library
